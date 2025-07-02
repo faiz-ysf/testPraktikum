@@ -1,0 +1,15 @@
+{
+  "java.test.config": {
+    "coverage": {
+      "appendResult": false,
+    }
+  },
+  "java.project.sourcePaths": [
+    "src"
+  ],
+  "java.project.referencedLibraries": [
+    "lib/junit-platform-console-standalone-1.9.1.jar"
+  ],
+  "java.project.outputPath": "bin",
+  "java.debug.settings.onBuildFailureProceed": true
+}
