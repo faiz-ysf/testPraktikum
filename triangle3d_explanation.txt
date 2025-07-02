@@ -1,0 +1,58 @@
+### Penjelasan Logika dan Algoritma untuk `Triangle3D.java`
+
+Dokumen ini menjelaskan algoritma yang digunakan dalam file `Triangle3D.java` untuk menghasilkan dan mencetak struktur segitiga unik yang tidak beraturan (jagged).
+
+#### 1. Tujuan Utama
+
+Tujuan utama program ini adalah untuk membuat array 2D (khususnya, array jagged di mana setiap baris dapat memiliki panjang yang berbeda) yang membentuk pola segitiga "gergaji" atau "zigzag". Setelah membuat struktur, program ini mengisi segitiga dengan angka dalam urutan kolom-per-kolom yang spesifik dan kemudian mencetak hasil akhirnya ke konsol.
+
+#### 2. Rincian Algoritma
+
+Algoritma ini dapat dipecah menjadi tiga langkah utama:
+
+**Langkah 1: Menginisialisasi Struktur Segitiga**
+
+Ini adalah bagian paling kompleks dari logika. Tujuannya adalah untuk mendefinisikan *bentuk* dari array jagged sebelum kita memasukkan angka apa pun ke dalamnya.
+
+- Sebuah loop `while` berulang untuk membangun segitiga dalam beberapa segmen.
+- Sebuah variabel `size` mengontrol ketinggian setiap segmen. `size` ini bertambah 1 setelah setiap segmen selesai (`size++`).
+- Sebuah loop `for` di dalamnya membuat baris-baris dalam sebuah segmen. Untuk setiap baris `j` dalam segmen dengan `size` tertentu, loop ini menginisialisasi array dalam dengan `j + 1` kolom.
+
+**Contoh Penelusuran Pembuatan Struktur (dengan `n=6`):**
+
+1.  **Segmen 1 (`size` = 1):**
+    - Loop berjalan sekali.
+    - `triangle[0]` dibuat dengan `1` kolom.
+
+2.  **Segmen 2 (`size` = 2):**
+    - Loop berjalan dua kali.
+    - `triangle[1]` dibuat dengan `1` kolom.
+    - `triangle[2]` dibuat dengan `2` kolom.
+
+3.  **Segmen 3 (`size` = 3):**
+    - Loop berjalan tiga kali.
+    - `triangle[3]` dibuat dengan `1` kolom.
+    - `triangle[4]` dibuat dengan `2` kolom.
+    - `triangle[5]` dibuat dengan `3` kolom.
+
+Proses ini menghasilkan array jagged dengan pola berulang yang khas dari panjang baris yang meningkat.
+
+**Langkah 2: Mengisi Segitiga dengan Angka**
+
+Setelah struktur didefinisikan, program mengisinya dengan angka.
+
+- Proses pengisian terjadi dalam **urutan kolom-utama (column-major order)**. Ini berarti program mengisi kolom pertama dari atas ke bawah, kemudian kolom kedua dari atas ke bawah, dan seterusnya.
+- Pertama-tama, program menghitung `maxCols`, yaitu lebar maksimum dari setiap baris dalam segitiga, untuk mengetahui berapa banyak kolom yang perlu diisi.
+- Sebuah loop bersarang berulang melalui setiap kolom (`col`) dan kemudian setiap baris (`row`).
+- Pemeriksaan kritis `if (col < triangle[row].length)` dilakukan. Ini mencegah kesalahan dengan memastikan program hanya mencoba menempatkan angka di sel `[row][col]` jika sel tersebut benar-benar ada dalam struktur jagged.
+- Sebuah variabel penghitung `val` digunakan untuk angka-angka tersebut. Variabel ini ditambah (`val++`) setelah setiap penempatan. Operator modulo (`% 10`) digunakan untuk menjaga agar angka tetap berupa satu digit (0-9) untuk output visual yang lebih bersih.
+
+**Langkah 3: Mencetak Matriks Akhir**
+
+Ini adalah langkah terakhir dan yang paling sederhana:
+
+- Sebuah loop `for-each` bersarang standar digunakan untuk berulang melalui array 2D `triangle`.
+- Loop luar mendapatkan setiap array `row`.
+- Loop dalam mendapatkan setiap `num` dari `row` saat ini.
+- Setiap angka dicetak, diikuti oleh spasi.
+- Setelah semua angka dalam satu baris dicetak, karakter baris baru dicetak untuk memindahkan kursor ke baris berikutnya untuk baris selanjutnya.
