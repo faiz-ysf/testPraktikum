@@ -1,0 +1,284 @@
+// Add this method to the Admin class
+
+public void hapusUser(User[] database, int[][] mutualBook) {
+    if (countActiveUsers(database) <= 1) {
+        System.out.println("Tidak dapat menghapus user. Minimal harus ada 1 user dalam sistem.");
+        return;
+    }
+    
+    System.out.println("== Daftar User yang Dapat Dihapus ==");
+    for (int i = 0; i < database.length; i++) {
+        if (database[i] != null && !database[i].getUsername().equals(this.getUsername())) {
+            System.out.println(i + ". " + database[i].getUsername() + " (" + database[i].getRole() + ")");
+        }
+    }
+    
+    System.out.print("Masukkan ID user yang ingin dihapus: ");
+    int userIdToDelete;
+    
+    while (true) {
+        if (input.hasNextInt()) {
+            userIdToDelete = input.nextInt();
+            input.nextLine(); // consume newline
+            break;
+        } else {
+            System.out.print("Input harus berupa angka. Silakan coba lagi: ");
+            input.next();
+        }
+    }
+    
+    // Validate user ID
+    if (userIdToDelete < 0 || userIdToDelete >= database.length) {
+        System.out.println("ID user tidak valid.");
+        return;
+    }
+    
+    if (database[userIdToDelete] == null) {
+        System.out.println("User dengan ID tersebut tidak ditemukan.");
+        return;
+    }
+    
+    if (database[userIdToDelete].getUsername().equals(this.getUsername())) {
+        System.out.println("Tidak dapat menghapus diri sendiri.");
+        return;
+    }
+    
+    String deletedUsername = database[userIdToDelete].getUsername();
+    
+    // Confirm deletion
+    System.out.print("Apakah Anda yakin ingin menghapus user '" + deletedUsername + "'? (y/n): ");
+    String confirmation = input.nextLine();
+    
+    if (!confirmation.equalsIgnoreCase("y")) {
+        System.out.println("Penghapusan dibatalkan.");
+        return;
+    }
+    
+    // Simply set to null
+    database[userIdToDelete] = null;
+    
+    // Clear mutual relationships for deleted user
+    for (int i = 0; i < mutualBook.length; i++) {
+        mutualBook[userIdToDelete][i] = 0; // Clear who deleted user follows
+        mutualBook[i][userIdToDelete] = 0; // Clear who follows deleted user
+    }
+    
+    System.out.println("User '" + deletedUsername + "' berhasil dihapus dari sistem.");
+}
+
+private int countActiveUsers(User[] database) {
+    int count = 0;
+    for (User user : database) {
+        if (user != null) {
+            count++;
+        }
+    }
+    return count;
+}
+
+// Replace the existing daftarPengguna method in Admin class
+
+public void daftarPengguna(User[] user) {
+    System.out.println(".-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-.");
+    System.out.println("| ID | Username                       |  Role                           |");
+    System.out.println("*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*");
+    for (int i = 0; i < user.length; i++) {
+        if (user[i] != null) { // Only show non-null users
+            System.out.printf("| %-2d | %-30s | %-30s |\n", i, user[i].getUsername(), user[i].getRole());
+        }
+    }
+    System.out.println("`-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'");
+}
+
+// Replace the existing login method in TP4 class
+
+public User login(User[] database) {
+    User currentUser = null;
+    System.out.println("                ");
+    System.out.println("silakan login untuk dapat menggunakan fitur kami");
+    
+    do {
+        System.out.print("Username: "); String username = input.nextLine();
+        System.out.print("Password: "); String password = input.nextLine();
+        System.out.println("                ");
+        for (User user : database) {
+            if (user != null && user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                currentUser = user;
+                break;
+            }
+        }
+        if (currentUser != null) {
+            System.out.println("Berhasil login!");
+            break;
+        }
+        System.out.println("Maaf, username atau password yang anda masukkan salah. Tolong masukkan kembali dengan benar.");
+        
+    } while (true);
+    return currentUser;
+}
+
+// Replace the existing resetPassword method in Admin class
+
+public void resetPassword(User[] user) {
+    User targetUser = null; 
+    
+    findUser:
+    do {
+        System.out.print("Masukkan Username: ");
+        String inputUser = input.nextLine();
+        for (User target : user) {
+            if (target != null && target.getUsername().equals(inputUser)) {
+                targetUser = target;
+                break findUser;
+            }
+        }
+
+        System.out.println("Maaf, username yang anda masukkan salah." + 
+                        "Tolong masukkan kembali dengan benar.");
+    } while(true);
+
+    do { 
+        System.out.print("Masukkan password baru: ");
+        String newPassword = input.nextLine();
+        
+        if (newPassword.isEmpty()) {
+            System.out.println("Password tidak boleh kosong.");
+        } else if (targetUser.getPassword().equals(newPassword)) {
+            System.out.println("Password baru tidak boleh sama dengan password lama.");
+        } else {
+            targetUser.setPassword(newPassword);
+            System.out.println("Password berhasil diubah.");
+            break;
+        }
+    } while (true);
+}
+
+// Update tampilkanKembaliFess method in Admin class
+public void tampilkanKembaliFess(User[] user) {
+    System.out.println("== Semua Menfess yang Disembunyikan == ");
+    boolean foundHiddenFess = false;
+    
+    for (User pengguna : user) {
+        if (pengguna != null && pengguna.getMenfessData() != null) { // Add null check
+            // ... rest of the method remains the same
+        }
+    }
+    // ... rest of the method remains the same
+}
+
+// Update sembunyikankanKembaliFess method in Admin class
+public void sembunyikankanKembaliFess(User[] user) {
+    System.out.println("== Semua Menfess Publik yang Terlihat == ");
+    boolean foundVisibleFess = false;
+    
+    for (User pengguna : user) {
+        if (pengguna != null && pengguna.getMenfessData() != null) { // Add null check
+            // ... rest of the method remains the same
+        }
+    }
+    // ... rest of the method remains the same
+}
+
+// Update followUser method in Cosmic class
+public void followUser(User user, User[] database, int[][] mutualBook) {
+    System.out.print("Masukkan username yang ingin di-follow: ");
+    String userToFollow = input.nextLine();
+    
+    if (user.getUsername().equalsIgnoreCase(userToFollow)) {
+        System.out.println("Tidak bisa mem-follow diri sendiri!");
+        return;
+    }
+    
+    int currentUserIndex = -1, targetUserIndex = -1;
+    
+    for (int i = 0; i < database.length; i++) {
+        if (database[i] != null && database[i].getUsername().equalsIgnoreCase(user.getUsername())) {
+            currentUserIndex = i;
+        }
+        if (database[i] != null && database[i].getUsername().equalsIgnoreCase(userToFollow)) {
+            targetUserIndex = i;
+        }
+    }
+    
+    if (targetUserIndex == -1) {
+        System.out.println("Username tidak ditemukan!");
+        return;
+    }
+    
+    if (mutualBook[currentUserIndex][targetUserIndex] == 1) {
+        System.out.println("Anda sudah mem-follow " + userToFollow + "!");
+        return;
+    }
+    
+    mutualBook[currentUserIndex][targetUserIndex] = 1;
+    System.out.println("Berhasil mem-follow " + userToFollow + "!");
+}
+
+// Update seeMutuals method in Cosmic class
+public void seeMutuals(User user, User[] database, int[][] mutualBook) {
+    System.out.println("Daftar mutuals BurhanFess");
+    for (int i = 0; i < database.length; i++) {
+        if (database[i] != null && database[i] instanceof Cosmic) { // Add null check
+            System.out.println("== User: " + database[i].getUsername() + ", ID: " + database[i].getId() + " ==");
+            printMutuals(i, database, mutualBook);
+            System.out.println();
+        }
+    }
+}
+
+// Update printMutuals method in Cosmic class
+public void printMutuals(int userIndex, User[] database, int[][] mutualBook) {
+    System.out.println("Follower: ");
+    boolean statusFollower = false;
+    
+    for (int k = 0; k < database.length; k++) {
+        if (k != userIndex && database[k] != null && mutualBook[k][userIndex] == 1) { // Add null check
+            System.out.println("- " + database[k].getUsername());
+            statusFollower = true;
+        }
+    }
+    if (!statusFollower) {
+        System.out.println("Pengguna belum di-follow siapapun");
+    }
+    
+    System.out.println("Following: ");
+    boolean statusFollowing = false;
+    int[] followingId = mutualBook[userIndex];
+    for (int l = 0; l < database.length; l++) {
+        if (followingId[l] != 0 && database[l] != null) { // Add null check
+            System.out.println("- " + database[l].getUsername());
+            statusFollowing = true;
+        }
+    }
+    if (!statusFollowing) {
+        System.out.println("Pengguna belum mem-follow siapapun");
+    }
+}
+
+// Update lihatSemuaFessPublik method in Cosmic class
+public void lihatSemuaFessPublik(User[] database, User user) {
+    // ... existing code ...
+    
+    for (User pengguna : database) {
+        if (pengguna != null && pengguna.getMenfessData() != null) { // Add null check
+            // ... rest of the method remains the same
+        }
+    }
+    // ... rest of the method remains the same
+}
+
+// Update kirimFess method - find receiver validation
+// In the confession receiver validation part:
+for (User penerima : database) {
+    if (penerima != null && penerima.getUsername().equals(receiver)) { // Add null check
+        receiverUser = penerima;
+        break;
+    }
+}
+
+// Add case 5 to Admin menu in pilihanMenu method
+case 5 -> admin.hapusUser(database, mutualBook);
+case 6 -> { break adminLoop; }
+case 7 -> { statusGame = false; break adminLoop; }
+
+
