@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class ConfessFess extends Menfess {
     
     private User penerima;

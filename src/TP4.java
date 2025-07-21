@@ -150,6 +150,8 @@ public class TP4 {
 				<%%%%|==========> 4.) Melihat Daftar Menfess                     <==========|%%%%>
 				<%%%%|==========> 5.) Mengubah Password                          <==========|%%%%> 
 				<%%%%|==========> 6.) Logout                                     <==========|%%%%> 
+				----------------- 8.) Fitur Lihat Cofess Balas saya          --------------------
+				----------------  9.) Fitur Confession untuk saya            --------------------
 				<%%%%|==========> 7.) End Game                                   <==========|%%%%> 
 			""";
 			cosmicLoop:
@@ -166,6 +168,8 @@ public class TP4 {
 					case 5 -> cosmic.changePassword(cosmic);
 					case 6 -> { break cosmicLoop; }
 					case 7 -> { statusGame = false; break cosmicLoop; }
+					case 8 -> cosmic.lihatConfessionUntukSaya(database, user);
+					case 9 -> cosmic.lihatBalasanConfessionSaya(user);
 					default -> System.out.println("Pilihan tidak valid. Silakan coba lagi.");
 				}
 			}
