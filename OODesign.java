@@ -1,3 +1,33 @@
+public abstract class User {
+    protected String name;
+    protected int umur;
+    protected String alamat;
+    protected String username;
+    private String password;
+
+    public User(String name, int umur, String alamat, String username, String password) {
+        this.name = name;
+        this.umur = umur;
+        this.alamat = alamat;
+        this.username = username;
+        this.password = password;
+    }
+    
+    public abstract boolean login(String username, String password);
+
+    public String getName() { return this.name;}
+
+    public int getUmur() { return this.umur;}
+
+    public String getAlamat() {  return this.alamat;}
+
+    public String getUsername() { return this.username;} 
+
+    public String getPassword() { return this.password; }
+    
+}
+
+
 public class Pembeli extends User {
     private double saldo;
     public String tanggalRegistrasi;
